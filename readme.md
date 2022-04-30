@@ -1,5 +1,7 @@
 # Learning Node.Js using the ZTM course for this technology
 
-https://www.udemy.com/course/complete-nodejs-developer-zero-to-mastery/
+## Links
 
-https://zerotomastery.io/
+The course: https://www.udemy.com/course/complete-nodejs-developer-zero-to-mastery/
+
+ZTM website: https://zerotomastery.io/
