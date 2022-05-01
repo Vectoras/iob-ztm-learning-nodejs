@@ -1,7 +1,7 @@
 const { parse } = require('csv-parse');
 const fs = require('fs');
 
-const results = [];
+const habitablePlanets = [];
 
 function isHabitablePlanet(planet) {
   return (
@@ -20,11 +20,16 @@ fs.createReadStream('kepler_data.csv')
     })
   )
   .on('data', (data) => {
-    if (isHabitablePlanet(data)) results.push(data);
+    if (isHabitablePlanet(data)) habitablePlanets.push(data);
   })
   .on('error', (err) => {
     console.log('(IOB) Error at reading the file: ', err);
   })
   .on('end', () => {
-    console.log(`${results.length} habitable planets found`);
+    console.log(`${habitablePlanets.length} habitable planets found`);
+    console.log(
+      habitablePlanets.map((planet) => {
+        return planet['kepler_name'];
+      })
+    );
   });
