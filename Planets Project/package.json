@@ -12,5 +12,8 @@
     "project"
   ],
   "author": "Vectoras",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "^5.0.4"
+  }
 }
