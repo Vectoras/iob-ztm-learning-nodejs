@@ -57,8 +57,8 @@ server.on('request', (req, res) => {
       console.log(friend);
       friends.push(JSON.parse(friend));
     });
-    res.statusCode = 200;
-    res.end();
+
+    req.pipe(res);
   } else if (req.method === 'GET' && items[1] === 'friends') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
