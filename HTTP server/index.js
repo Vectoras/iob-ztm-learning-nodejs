@@ -7,7 +7,7 @@ const server = http.createServer();
 const friends = [
   {
     id: 0,
-    name: 'Nicola Tesla',
+    name: 'Nikola Tesla',
   },
   {
     id: 1,
@@ -20,7 +20,9 @@ const friends = [
 ];
 
 server.on('request', (req, res) => {
-  if (req.url === '/json') {
+  const items = req.url.split('/');
+
+  if (items[1] === 'json') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
@@ -31,7 +33,7 @@ server.on('request', (req, res) => {
         messge: 'Hello! Sir Isaac Newton is your friend!',
       })
     );
-  } else if (req.url === '/html') {
+  } else if (items[1] === 'html') {
     res.writeHead(200, {
       'Content-Type': 'text/html',
     });
@@ -49,6 +51,18 @@ server.on('request', (req, res) => {
     res.write('</html>');
 
     res.end();
+  } else if (items[1] === 'friends') {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+    });
+
+    if (items.length === 3) {
+      const friendIndex = Number(items[2]);
+      res.end(JSON.stringify(friends[friendIndex]));
+    } else {
+      const friendIndex = items[2];
+      res.end(JSON.stringify(friends));
+    }
   } else {
     res.statusCode = 404;
     res.end();
