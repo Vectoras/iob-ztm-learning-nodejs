@@ -22,7 +22,7 @@ const friends = [
 server.on('request', (req, res) => {
   const items = req.url.split('/');
 
-  if (items[1] === 'json') {
+  if (req.method === 'GET' && items[1] === 'json') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
@@ -33,7 +33,7 @@ server.on('request', (req, res) => {
         messge: 'Hello! Sir Isaac Newton is your friend!',
       })
     );
-  } else if (items[1] === 'html') {
+  } else if (req.method === 'GET' && items[1] === 'html') {
     res.writeHead(200, {
       'Content-Type': 'text/html',
     });
@@ -51,7 +51,15 @@ server.on('request', (req, res) => {
     res.write('</html>');
 
     res.end();
-  } else if (items[1] === 'friends') {
+  } else if (req.method === 'POST' && items[1] === 'friends') {
+    req.on('data', (data) => {
+      const friend = data.toString();
+      console.log(friend);
+      friends.push(JSON.parse(friend));
+    });
+    res.statusCode = 200;
+    res.end();
+  } else if (req.method === 'GET' && items[1] === 'friends') {
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
