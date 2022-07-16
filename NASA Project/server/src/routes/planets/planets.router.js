@@ -2,14 +2,14 @@
 const express = require('express');
 
 // importing the controller
-const { getAllPlanets } = require('./planets.controller');
+const { httpGetAllPlanets } = require('./planets.controller');
 
 // creating the router
 const planetsRouter = express.Router();
 
 // --- get -----------
 
-planetsRouter.get('/planets', getAllPlanets);
+planetsRouter.get('/', httpGetAllPlanets);
 
 // --- post ----------
 
