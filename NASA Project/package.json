@@ -16,6 +16,7 @@
     "test:server": "npm run test --prefix server",
     "test:client": "npm run test --prefix client",
     "test": "concurrently -m 1 --timings \"npm:test:server\" \"npm:test:client\" -c \"blue,magenta\"",
+    "test-watch:server": "npm run test-watch --prefix server",
     "deploy": "concurrently --kill-others -m 1 --timings -t\"HH:mm:ss\" -n \"building-react-app,server\" -p \"{name} ({time})\" -c \"blue,magenta\" \"npm:build-on-server --prefix client\" \"npm:start --prefix server\" ",
     "build:client": "npm run build-on-server --prefix client"
   },
