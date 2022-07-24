@@ -6,9 +6,14 @@ const {
   abortLaunchById,
 } = require('../../models/launches.model');
 
+// importing services functions
+const { getPagination } = require('../../services/query');
+
 // functions
 function httpGetAllLaunches(req, res) {
-  return res.status(200).json(getAllLaunches());
+  const { skip, limit } = getPagination(req.query);
+  const launches = getAllLaunches(skip, limit);
+  return res.status(200).json(launches);
 }
 
 function httpAddNewLaunch(req, res) {

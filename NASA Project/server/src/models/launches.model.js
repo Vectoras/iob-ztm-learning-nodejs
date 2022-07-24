@@ -1,25 +1,85 @@
+// importing npm modules
+const axios = require('axios');
+
 // data
 
 const launches = new Map();
 
-let latestFlightNumber = 100;
+let latestFlightNumber = 0;
 
-const launch = {
-  flightNumber: latestFlightNumber,
-  mission: 'Kepler Exploration X',
-  rocket: 'Explorer IS2',
-  launchDate: new Date('27/12/2030'),
-  target: 'Kepler-442 b',
-  customers: ['ZTM', 'NASA'],
-  upcoming: true,
-  success: true,
-};
+// const launch = {
+//   flightNumber: latestFlightNumber, // flight_number
+//   mission: 'Kepler Exploration X', // name
+//   rocket: 'Explorer IS2', // rocket.name
+//   launchDate: new Date('27/12/2030'), // date_local
+//   target: 'Kepler-442 b', // N/A
+//   customers: ['ZTM', 'NASA'], // payload.customers for each payload
+//   upcoming: true, // upcoming
+//   success: true, // success
+// };
 
-launches.set(launch.flightNumber, launch);
+// launches.set(launch.flightNumber, launch);
+
+const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
 // functions
-function getAllLaunches() {
-  return Array.from(launches.values());
+async function loadLaunchData() {
+  console.log('Downloading launch data ...');
+  const response = await axios.post(SPACEX_API_URL, {
+    query: {},
+    options: {
+      pagination: false,
+      populate: [
+        {
+          path: 'rocket',
+          select: {
+            name: 1,
+          },
+        },
+        {
+          path: 'payloads',
+          select: {
+            customers: 1,
+          },
+        },
+      ],
+    },
+  });
+
+  if (response.status !== 200) {
+    console.log('Problem downloading launch data');
+    throw new Error('Launch data download failed');
+  }
+
+  const launchDocs = response.data.docs;
+
+  for (const launchDoc of launchDocs) {
+    const payloads = launchDoc['payloads'];
+    const customers = payloads.flatMap((payload) => {
+      return payload['customers'];
+    });
+
+    const launch = {
+      flightNumber: launchDoc['flight_number'],
+      mission: launchDoc['name'],
+      rocket: launchDoc['rocket']['name'],
+      launchDate: launchDoc['date_local'],
+      upcoming: launchDoc['upcoming'],
+      success: launchDoc['success'],
+      customers,
+    };
+
+    launches.set(launch.flightNumber, launch);
+  }
+}
+
+function getAllLaunches(skip, limit) {
+  const start = skip;
+  const end = limit ? skip + limit : undefined;
+
+  return Array.from(launches.values())
+    .sort((a, b) => a.flightNumber - b.flightNumber)
+    .slice(start, end);
 }
 
 function addNewLaunch(launch) {
@@ -49,6 +109,7 @@ function abortLaunchById(launchId) {
 
 // exporting
 module.exports = {
+  loadLaunchData,
   getAllLaunches,
   addNewLaunch,
   existsLaunchWithId,

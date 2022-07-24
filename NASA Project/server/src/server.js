@@ -1,8 +1,12 @@
+// loading environmental variables
+
+require('dotenv').config();
 // importing node modules
 const http = require('http');
 
 // importing self built modules
 const { loadPlanetsData } = require('./models/planets.model');
+const { loadLaunchData } = require('./models/launches.model');
 
 // importing the express app
 const app = require('./app');
@@ -17,6 +21,7 @@ const server = http.createServer(app);
 async function startServer() {
   // await for data load
   await loadPlanetsData();
+  await loadLaunchData();
 
   // server start
   server.listen(PORT, () => {
