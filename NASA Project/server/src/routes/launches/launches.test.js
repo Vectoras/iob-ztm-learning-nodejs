@@ -8,7 +8,10 @@ const app = require('../../app');
 
 describe('Test GET /launches', () => {
   test('It should respond with 200 success', async () => {
-    const response = await request(app).get('/launches').expect(200).expect('Content-Type', /json/);
+    const response = await request(app)
+      .get('/v1/launches')
+      .expect(200)
+      .expect('Content-Type', /json/);
     // expect(response.statusCode).toBe(200);
   });
 });
@@ -50,7 +53,7 @@ describe('Test POST /launch', () => {
 
   test('It should catch missing required properties', async () => {
     const response = await request(app)
-      .post('/launches')
+      .post('/v1/launches')
       .send(launchDataWithoutDate)
       .expect('Content-Type', /json/)
       .expect(400);
@@ -62,7 +65,7 @@ describe('Test POST /launch', () => {
 
   test('It should catch invalid dates', async () => {
     const response = await request(app)
-      .post('/launches')
+      .post('/v1/launches')
       .send(launchDataWithInvalidDate)
       .expect('Content-Type', /json/)
       .expect(400);

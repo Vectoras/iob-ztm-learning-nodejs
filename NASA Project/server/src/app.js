@@ -9,9 +9,8 @@ console.log(__dirname);
 // creating the app
 const app = express();
 
-// importing routes
-const planetsRouter = require('./routes/planets/planets.router');
-const launchesRouter = require('./routes/launches/launches.router');
+// importing api routers
+const api_v1 = require('./routes/v1.api');
 
 // middleware
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -20,8 +19,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // using routes
-app.use('/planets', planetsRouter);
-app.use('/launches', launchesRouter);
+app.use('/v1', api_v1);
 app.use('/*', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));
 
 // exports
