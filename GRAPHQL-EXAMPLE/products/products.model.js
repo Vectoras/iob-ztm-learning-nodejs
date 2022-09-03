@@ -75,6 +75,7 @@ function addNewProductReview(productId, rating, comment) {
 }
 
 // exporting
+
 module.exports = {
   getAllProducts,
   getProductsByPrice,
