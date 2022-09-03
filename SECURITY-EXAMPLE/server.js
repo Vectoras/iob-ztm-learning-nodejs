@@ -32,7 +32,8 @@ const AUTH_OPTIONS = {
 
 function verifyCallback(accessToken, refreshToken, profile, done) {
   console.log('Google profile', profile);
-  // console.log('accessToken', accessToken);
+  console.log('accessToken', accessToken);
+  console.log('refreshToken', refreshToken);
   done(null, profile);
 }
 

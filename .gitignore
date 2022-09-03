@@ -1,2 +1,4 @@
 node_modules/
+.other-repositories/
+
 .env
